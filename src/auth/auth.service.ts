@@ -4,8 +4,6 @@ import {JwtService} from "@nestjs/jwt";
 import {RegisterDto} from "./dtos/register.dto";
 import {UserEntity} from "../user/entities/user.entity";
 import * as bcrypt from "bcrypt";
-import {LoginDto} from "./dtos/login.dto";
-import {Request} from "express";
 import {UserInterface} from "../user/interfaces/user.interface";
 import {RequestWithUser} from "../cats/interfaces/request-with-user.type";
 
@@ -29,7 +27,7 @@ export class AuthService {
 
     async login(req: RequestWithUser): Promise<{ access_token: string }> {
         const user = req?.user as UserInterface;
-        const payload = { username: req.user.username, userId: user.id, role: user.role };
+        const payload = { username: req.user.username, sub: user.id };
         return {
             access_token: this.jwtService.sign(payload),
         };
